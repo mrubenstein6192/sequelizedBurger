@@ -1,34 +1,41 @@
-// import dependencies
+// requires all important packages
 const express = require('express');
 const exphbs = require('express-handlebars');
 
+// initalize express
 const app = express();
+
+// use deployed port if deployed otherwise use local port 3000
 const PORT = process.env.PORT || 3000;
 
-// set up necessarily middleware
+var db = require("./models");
+
+// use middleware for information passing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// tell server to ignore any requests being made to anything in the "public" folder
+// make public folder static 
 app.use(express.static("public"));
 
-// set up templating engine
+// set up handlebars and allow views
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-// turn on routes
+// bring in routes
 require('./routes/htmlRoutes')(app);
 require('./routes/apiRoutes')(app);
 
-// set up wildcard (404) route
+// catch all for errors and missed inputs
 app.get('*', function(req, res) {
   res.json({
     status: 404,
-    message: "You've come to the wrong place!"
+    message: "Page not found!"
   });
 });
 
-// turn on server
-app.listen(PORT, function(){
-  console.log("App is listening on PORT: " + PORT);
-})
+// initialize server
+db.sequelize.sync({ force: false }).then(function() {
+  app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
+});

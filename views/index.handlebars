@@ -6,9 +6,9 @@
   <div class="row">
     {{!-- column for form --}}
     <div class="col-12 col-md-3">
-      <form id="burger-form">
-        <input class="form-control" id="name-input" placeholder="Burger's Name"/>
-        <button class="btn btn-primary btn-block" type="submit">
+      <form>
+        <input class="form-control" id="name" placeholder="Burger's Name"/>
+        <button class="btn btn-primary btn-block" id = "submit" type="submit">
           Order A Burger!
         </button>
       </form>
@@ -22,7 +22,7 @@
         <div class="col-12 col-md-7">
           <h2>Burgers That Aren't Ready Yet</h2>
           <ul class="list-group">
-            {{!-- use handlebars to print burgers that aren't hungry --}}
+            {{!-- use handlebars to print burgers that aren't ready --}}
             {{#each burgerData}}
               {{!-- this is the same as saying !== --}}
               {{#unless ready}}
@@ -72,4 +72,3 @@
   </div>
 </div>
 
-<script src="./assets/js/burgers.js"></script>
